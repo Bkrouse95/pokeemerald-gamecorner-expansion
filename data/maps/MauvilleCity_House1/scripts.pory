@@ -1,0 +1,2542 @@
+raw `
+MauvilleCity_House1_MapScripts::
+	.byte 0
+
+MauvilleCity_House1_EventScript_RockSmashDude::
+	lock
+	faceplayer
+	goto_if_set FLAG_RECEIVED_HM_ROCK_SMASH, MauvilleCity_House1_EventScript_ReceivedRockSmash
+	msgbox MauvilleCity_House1_Text_ImRockSmashDudeTakeThis, MSGBOX_DEFAULT
+	giveitem ITEM_HM_ROCK_SMASH
+	setflag FLAG_RECEIVED_HM_ROCK_SMASH
+	setflag FLAG_HIDE_ROUTE_111_ROCK_SMASH_TIP_GUY
+	msgbox MauvilleCity_House1_Text_ExplainRockSmash, MSGBOX_DEFAULT
+	release
+	end
+
+MauvilleCity_House1_EventScript_ReceivedRockSmash::
+	msgbox MauvilleCity_House1_Text_MonCanFlyOutOfSmashedRock, MSGBOX_DEFAULT
+	release
+	end
+
+MauvilleCity_House1_Text_ImRockSmashDudeTakeThis:
+	.string "Woohoo!\p"
+	.string "I hear people call me the ROCK SMASH\n"
+	.string "GUY, but I find that sort of degrading.\p"
+	.string "I think I deserve a bit more respect,\n"
+	.string "like maybe the ROCK SMASH DUDE.\p"
+	.string "Woohoo!\p"
+	.string "Anyways, your POKéMON look pretty\n"
+	.string "strong.\p"
+	.string "I like that!\n"
+	.string "Here, take this HIDDEN MACHINE!$"
+
+MauvilleCity_House1_Text_ExplainRockSmash:
+	.string "That HM contains ROCK SMASH.\p"
+	.string "If you come across large boulders\n"
+	.string "that block your path…\p"
+	.string "Well, use that HM move and smash\n"
+	.string "them right out of your way!\p"
+	.string "Yes, sir! Smash rocks aside, I say!\n"
+	.string "Woohoo!$"
+
+MauvilleCity_House1_Text_MonCanFlyOutOfSmashedRock:
+	.string "Oh, yes, if you smash a rock, a POKéMON\n"
+	.string "could come flying out of hiding.\p"
+	.string "Woohoo!$"
+
+
+
+`
+script coincase {
+    lockall
+    faceplayer
+	if (flag(FLAG_UNUSED_0x2BB)) {
+    msgbox("You already have a coinbox.", MSGBOX_DEFAULT)
+		closemessage
+		release
+		end
+}
+	
+	else {
+		giveitem (ITEM_COIN_CASE ,1)
+	closemessage
+	showcoinsbox (10, 3)
+	waitbuttonpress
+	addcoins (9999)
+	updatecoinsbox (10, 3)
+	waitbuttonpress
+	hidecoinsbox (10, 3)
+	showmonpic (SPECIES_SCREAM_TAIL, 10, 3)
+	givemon (SPECIES_SCREAM_TAIL, 10, 0)
+	setflag (FLAG_UNUSED_0x2BB)
+	setflag (FLAG_SYS_POKEMON_GET)
+	setflag (FLAG_SYS_POKEDEX_GET)
+	setflag (FLAG_SYS_NATIONAL_DEX)
+	waitbuttonpress
+	hidemonpic
+	dynmultichoice(0,0, TRUE, 3, 0, DYN_MULTICHOICE_CB_NONE, "Charmander", "Bulbasaur", "Squirtle", "Pikachu")
+	if (var(VAR_RESULT) == 0) {
+    showmonpic (SPECIES_CHARMANDER, 10, 3)
+	msgbox(format("Would you like the fire Pokemon, Charmander?"), MSGBOX_DEFAULT)
+	hidemonpic
+	dynmultichoice(0,0, TRUE, 3, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+	if (var(VAR_RESULT) == 0) {
+		playmoncry (SPECIES_CHARMANDER, CRY_MODE_NORMAL)
+		waitmoncry
+		givemon (SPECIES_CHARMANDER, 10, 0)
+		msgbox("Received Charmander!", MSGBOX_DEFAULT)		
+    closemessage
+    release
+    end}
+	else
+	{
+		msgbox(format("Oh, you don't want Charmander?"), MSGBOX_DEFAULT)
+		closemessage
+		releaseall
+		end
+	}
+}
+elif (var(VAR_RESULT) == 1) {
+	showmonpic (SPECIES_BULBASAUR, 10, 3)
+	msgbox(format("Would you like the grass Pokemon, Bulbasaur?"), MSGBOX_DEFAULT)
+	hidemonpic
+	dynmultichoice(0,0, TRUE, 3, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+	if (var(VAR_RESULT) == 0) {
+		playmoncry (SPECIES_BULBASAUR, CRY_MODE_NORMAL)
+		waitmoncry
+		givemon (SPECIES_BULBASAUR, 10, 0)
+		msgbox("Received Bulbasaur!", MSGBOX_DEFAULT)		
+    closemessage
+    release
+    end}
+	else
+	{
+		msgbox(format("Oh, you don't want Bulbasaur?"), MSGBOX_DEFAULT)
+		closemessage
+		releaseall
+		end
+	}
+}
+elif (var(VAR_RESULT) == 2) {
+	showmonpic (SPECIES_SQUIRTLE, 10, 3)
+	msgbox(format("Would you like the water Pokemon, Squirtle?"), MSGBOX_DEFAULT)
+	hidemonpic
+	dynmultichoice(0,0, TRUE, 3, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+	if (var(VAR_RESULT) == 0) {
+		playmoncry (SPECIES_SQUIRTLE, CRY_MODE_NORMAL)
+		waitmoncry
+		msgbox("Received Squirtle!", MSGBOX_DEFAULT)		
+    closemessage
+    release
+    end}
+	else
+	{
+		msgbox(format("Oh, you don't want Squirtle?"), MSGBOX_DEFAULT)
+		closemessage
+		releaseall
+		end
+	}
+}
+elif (var(VAR_RESULT) == 3) {
+	showmonpic (SPECIES_PIKACHU, 10, 3)
+	msgbox(format("Would you like the electric Pokemon, Pikachu?"), MSGBOX_DEFAULT)
+	hidemonpic
+	dynmultichoice(0,0, TRUE, 3, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+	if (var(VAR_RESULT) == 0) {
+		playmoncry (SPECIES_PIKACHU, CRY_MODE_NORMAL)
+		waitmoncry
+		msgbox("Received Pikachu!", MSGBOX_DEFAULT)		
+    closemessage
+    release
+    end}
+	else
+	{
+		msgbox(format("Oh, you don't want Pikachu?"), MSGBOX_DEFAULT)
+		closemessage
+		releaseall
+		end
+	}
+}
+	}
+}
+		
+
+// ---------- Main entry script ----------
+script PokemonCoinShop {
+    goto (PokemonCoinShop_RegionMenu)
+}
+
+// ---------- Region selection menu ----------
+script PokemonCoinShop_RegionMenu {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Welcome to the Pokémon Coin Shop!\nWhich region's Pokémon would you like to see?"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE,
+        "Kanto", "Johto", "Hoenn")
+
+    switch (var(VAR_RESULT)) {
+        case 127: // B pressed
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 0: // Kanto
+            hidecoinsbox (10, 3)
+            goto (PokemonCoinShop_Kanto)
+        case 1: // Johto
+            hidecoinsbox (10, 3)
+            goto (PokemonCoinShop_Johto)
+        case 2: // Hoenn
+            hidecoinsbox (10, 3)
+            goto (PokemonCoinShop_Hoenn)
+    }
+}
+
+// ---------- Kanto page ----------
+script PokemonCoinShop_Kanto {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Here are some Kanto Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 5, 0, DYN_MULTICHOICE_CB_NONE,
+        "Charmander", "Bulbasaur", "Squirtle", "Pikachu", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127: // B pressed
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 4: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonCoinShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Charmander
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!\nCome back after making space."), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_CHARMANDER, 4, 3)
+                    msgbox(format("Would you like to buy Charmander for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_CHARMANDER, 50, ITEM_NONE)
+                        playmoncry (SPECIES_CHARMANDER, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Charmander!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind? Come back if you do."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Bulbasaur
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_BULBASAUR, 4, 3)
+                    msgbox(format("Would you like to buy Bulbasaur for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_BULBASAUR, 50, ITEM_NONE)
+                        playmoncry (SPECIES_BULBASAUR, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Bulbasaur!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Squirtle
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_SQUIRTLE, 4, 3)
+                    msgbox(format("Would you like to buy Squirtle for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_SQUIRTLE, 50, ITEM_NONE)
+                        playmoncry (SPECIES_SQUIRTLE, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Squirtle!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Pikachu
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_PIKACHU, 4, 3)
+                    msgbox(format("Would you like to buy Pikachu for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_PIKACHU, 50, ITEM_NONE)
+                        playmoncry (SPECIES_PIKACHU, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Pikachu!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+// ---------- Johto page ----------
+script PokemonCoinShop_Johto {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Here are some Johto Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 5, 0, DYN_MULTICHOICE_CB_NONE,
+        "Chikorita", "Cyndaquil", "Totodile", "Marill", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 4: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonCoinShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Chikorita
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_CHIKORITA, 4, 3)
+                    msgbox(format("Would you like to buy Chikorita for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_CHIKORITA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_CHIKORITA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Chikorita!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Cyndaquil
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_CYNDAQUIL, 4, 3)
+                    msgbox(format("Would you like to buy Cyndaquil for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_CYNDAQUIL, 50, ITEM_NONE)
+                        playmoncry (SPECIES_CYNDAQUIL, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Cyndaquil!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Totodile
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_TOTODILE, 4, 3)
+                    msgbox(format("Would you like to buy Totodile for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_TOTODILE, 50, ITEM_NONE)
+                        playmoncry (SPECIES_TOTODILE, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Totodile!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Marill
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_MARILL, 4, 3)
+                    msgbox(format("Would you like to buy Marill for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_MARILL, 50, ITEM_NONE)
+                        playmoncry (SPECIES_MARILL, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Marill!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+// ---------- Hoenn page ----------
+script PokemonCoinShop_Hoenn {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Here are some Hoenn Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 5, 0, DYN_MULTICHOICE_CB_NONE,
+        "Treecko", "Torchic", "Mudkip", "Ralts", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 4: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonCoinShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Treecko
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_TREECKO, 4, 3)
+                    msgbox(format("Would you like to buy Treecko for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_TREECKO, 50, ITEM_NONE)
+                        playmoncry (SPECIES_TREECKO, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Treecko!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Torchic
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_TORCHIC, 4, 3)
+                    msgbox(format("Would you like to buy Torchic for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_TORCHIC, 50, ITEM_NONE)
+                        playmoncry (SPECIES_TORCHIC, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Torchic!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Mudkip
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_MUDKIP, 4, 3)
+                    msgbox(format("Would you like to buy Mudkip for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_MUDKIP, 50, ITEM_NONE)
+                        playmoncry (SPECIES_MUDKIP, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Mudkip!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Ralts
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_RALTS, 4, 3)
+                    msgbox(format("Would you like to buy Ralts for 500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_RALTS, 50, ITEM_NONE)
+                        playmoncry (SPECIES_RALTS, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Ralts!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+
+// ---------- Main entry script for Legendary Merchant ----------
+script PokemonLegendShop {
+    goto (PokemonLegendShop_RegionMenu)
+}
+
+// ---------- Region selection menu ----------
+script PokemonLegendShop_RegionMenu {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Welcome to the Legendary Pokémon Shop!\nThese rare Pokémon require more coins.\nWhich region would you like to browse?"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE,
+        "Kanto Legends", "Johto Legends", "Hoenn Legends")
+
+    switch (var(VAR_RESULT)) {
+        case 127: // B pressed
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 0: // Kanto Legends
+            hidecoinsbox (10, 3)
+            goto (PokemonLegendShop_Kanto)
+        case 1: // Johto Legends
+            hidecoinsbox (10, 3)
+            goto (PokemonLegendShop_Johto)
+        case 2: // Hoenn Legends
+            hidecoinsbox (10, 3)
+            goto (PokemonLegendShop_Hoenn)
+    }
+}
+
+// ---------- Kanto Legends page ----------
+script PokemonLegendShop_Kanto {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Kanto Legendary & Competitive Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Mewtwo (2000)", "Mew (2500)", "Dragonite (1000)", "Gengar (800)", "Snorlax (800)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127: // B pressed
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonLegendShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Mewtwo - 2000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 2000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!\nCome back after making space."), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_MEWTWO, 4, 3)
+                    msgbox(format("Would you like to buy Mewtwo for 2000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (2000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_MEWTWO, 50, ITEM_NONE)
+                        playmoncry (SPECIES_MEWTWO, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Mewtwo!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind? Come back if you do."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 2000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Mew - 2500 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 2500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_MEW, 4, 3)
+                    msgbox(format("Would you like to buy Mew for 2500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (2500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_MEW, 50, ITEM_NONE)
+                        playmoncry (SPECIES_MEW, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Mew!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 2500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Dragonite - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_DRAGONITE, 4, 3)
+                    msgbox(format("Would you like to buy Dragonite for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_DRAGONITE, 50, ITEM_NONE)
+                        playmoncry (SPECIES_DRAGONITE, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Dragonite!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Gengar - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_GENGAR, 4, 3)
+                    msgbox(format("Would you like to buy Gengar for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_GENGAR, 50, ITEM_NONE)
+                        playmoncry (SPECIES_GENGAR, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Gengar!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Snorlax - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_SNORLAX, 4, 3)
+                    msgbox(format("Would you like to buy Snorlax for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_SNORLAX, 50, ITEM_NONE)
+                        playmoncry (SPECIES_SNORLAX, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Snorlax!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+// ---------- Johto Legends page ----------
+script PokemonLegendShop_Johto {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Johto Legendary & Competitive Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Lugia (2000)", "Ho-Oh (2000)", "Suicune (1500)", "Tyranitar (1200)", "Blissey (1000)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonLegendShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Lugia - 2000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 2000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_LUGIA, 4, 3)
+                    msgbox(format("Would you like to buy Lugia for 2000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (2000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_LUGIA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_LUGIA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Lugia!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 2000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Ho-Oh - 2000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 2000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_HO_OH, 4, 3)
+                    msgbox(format("Would you like to buy Ho-Oh for 2000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (2000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_HO_OH, 50, ITEM_NONE)
+                        playmoncry (SPECIES_HO_OH, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Ho-Oh!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 2000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Suicune - 1500 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_SUICUNE, 4, 3)
+                    msgbox(format("Would you like to buy Suicune for 1500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_SUICUNE, 50, ITEM_NONE)
+                        playmoncry (SPECIES_SUICUNE, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Suicune!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 1500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Tyranitar - 1200 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1200) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_TYRANITAR, 4, 3)
+                    msgbox(format("Would you like to buy Tyranitar for 1200 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1200)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_TYRANITAR, 50, ITEM_NONE)
+                        playmoncry (SPECIES_TYRANITAR, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Tyranitar!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 1200 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Blissey - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_BLISSEY, 4, 3)
+                    msgbox(format("Would you like to buy Blissey for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_BLISSEY, 50, ITEM_NONE)
+                        playmoncry (SPECIES_BLISSEY, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Blissey!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+// ---------- Hoenn Legends page ----------
+script PokemonLegendShop_Hoenn {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Hoenn Legendary & Competitive Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Rayquaza (2500)", "Groudon (2000)", "Kyogre (2000)", "Metagross (1500)", "Salamence (1500)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonLegendShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Rayquaza - 2500 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 2500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_RAYQUAZA, 4, 3)
+                    msgbox(format("Would you like to buy Rayquaza for 2500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (2500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_RAYQUAZA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_RAYQUAZA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Rayquaza!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 2500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Groudon - 2000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 2000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_GROUDON, 4, 3)
+                    msgbox(format("Would you like to buy Groudon for 2000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (2000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_GROUDON, 50, ITEM_NONE)
+                        playmoncry (SPECIES_GROUDON, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Groudon!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 2000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Kyogre - 2000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 2000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_KYOGRE, 4, 3)
+                    msgbox(format("Would you like to buy Kyogre for 2000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (2000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_KYOGRE, 50, ITEM_NONE)
+                        playmoncry (SPECIES_KYOGRE, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Kyogre!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 2000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Metagross - 1500 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_METAGROSS, 4, 3)
+                    msgbox(format("Would you like to buy Metagross for 1500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_METAGROSS, 50, ITEM_NONE)
+                        playmoncry (SPECIES_METAGROSS, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Metagross!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 1500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Salamence - 1500 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1500) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Party full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_SALAMENCE, 4, 3)
+                    msgbox(format("Would you like to buy Salamence for 1500 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1500)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_SALAMENCE, 50, ITEM_NONE)
+                        playmoncry (SPECIES_SALAMENCE, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Salamence!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Maybe next time."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("Need 1500 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+
+
+
+// ---------- Main entry script for Regional Merchant ----------
+script PokemonRegionalShop {
+    goto (PokemonRegionalShop_RegionMenu)
+}
+
+// ---------- Region selection menu ----------
+script PokemonRegionalShop_RegionMenu {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Welcome to the Regional Pokémon Shop!\nThese Pokémon come from distant regions.\nWhich region would you like to browse?"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE,
+        "Galar", "Hisui", "Alola")
+
+    switch (var(VAR_RESULT)) {
+        case 127: // B pressed
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 0: // Galar
+            hidecoinsbox (10, 3)
+            goto (PokemonRegionalShop_Galar)
+        case 1: // Hisui
+            hidecoinsbox (10, 3)
+            goto (PokemonRegionalShop_Hisui)
+        case 2: // Alola
+            hidecoinsbox (10, 3)
+            goto (PokemonRegionalShop_Alola)
+    }
+}
+
+// ---------- Galar page ----------
+script PokemonRegionalShop_Galar {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Galar Region Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Rillaboom (800)", "Cinderace (800)", "Inteleon (800)",
+        "Dragapult (1200)", "Toxtricity (600)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonRegionalShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Rillaboom - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!\nCome back after making space."), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_RILLABOOM, 4, 3)
+                    msgbox(format("Would you like to buy Rillaboom for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_RILLABOOM, 50, ITEM_NONE)
+                        playmoncry (SPECIES_RILLABOOM, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Rillaboom!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind? Come back if you do."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Cinderace - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_CINDERACE, 4, 3)
+                    msgbox(format("Would you like to buy Cinderace for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_CINDERACE, 50, ITEM_NONE)
+                        playmoncry (SPECIES_CINDERACE, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Cinderace!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Inteleon - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_INTELEON, 4, 3)
+                    msgbox(format("Would you like to buy Inteleon for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_INTELEON, 50, ITEM_NONE)
+                        playmoncry (SPECIES_INTELEON, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Inteleon!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Dragapult - 1200 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1200) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_DRAGAPULT, 4, 3)
+                    msgbox(format("Would you like to buy Dragapult for 1200 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1200)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_DRAGAPULT, 50, ITEM_NONE)
+                        playmoncry (SPECIES_DRAGAPULT, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Dragapult!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1200 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Toxtricity - 600 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 600) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_TOXTRICITY_AMPED, 4, 3)
+                    msgbox(format("Would you like to buy Toxtricity for 600 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (600)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_TOXTRICITY_AMPED, 50, ITEM_NONE)
+                        playmoncry (SPECIES_TOXTRICITY_AMPED, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Toxtricity!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 600 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+// ---------- Hisui page ----------
+script PokemonRegionalShop_Hisui {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Hisui Region Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Hisui Typhlosion (1000)", "Hisui Samurott (1000)", "Hisui Decidueye (1000)",
+        "Ursaluna (1200)", "Wyrdeer (800)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonRegionalShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Hisui Typhlosion - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_TYPHLOSION_HISUI, 4, 3)
+                    msgbox(format("Would you like to buy Hisui Typhlosion for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_TYPHLOSION_HISUI, 50, ITEM_NONE)
+                        playmoncry (SPECIES_TYPHLOSION_HISUI, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Hisui Typhlosion!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Hisui Samurott - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_SAMUROTT_HISUI, 4, 3)
+                    msgbox(format("Would you like to buy Hisui Samurott for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_SAMUROTT_HISUI, 50, ITEM_NONE)
+                        playmoncry (SPECIES_SAMUROTT_HISUI, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Hisui Samurott!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Hisui Decidueye - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_DECIDUEYE_HISUI, 4, 3)
+                    msgbox(format("Would you like to buy Hisui Decidueye for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_DECIDUEYE_HISUI, 50, ITEM_NONE)
+                        playmoncry (SPECIES_DECIDUEYE_HISUI, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Hisui Decidueye!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Ursaluna - 1200 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1200) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_URSALUNA, 4, 3)
+                    msgbox(format("Would you like to buy Ursaluna for 1200 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1200)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_URSALUNA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_URSALUNA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Ursaluna!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1200 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Wyrdeer - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_WYRDEER, 4, 3)
+                    msgbox(format("Would you like to buy Wyrdeer for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_WYRDEER, 50, ITEM_NONE)
+                        playmoncry (SPECIES_WYRDEER, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Wyrdeer!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+// ---------- Alola page ----------
+script PokemonRegionalShop_Alola {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Alola Region Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Decidueye (800)", "Incineroar (800)", "Primarina (800)",
+        "Vikavolt (600)", "Kommo-o (1000)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonRegionalShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Decidueye (Alola) - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_DECIDUEYE, 4, 3)
+                    msgbox(format("Would you like to buy Decidueye for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_DECIDUEYE, 50, ITEM_NONE)
+                        playmoncry (SPECIES_DECIDUEYE, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Decidueye!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Incineroar - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_INCINEROAR, 4, 3)
+                    msgbox(format("Would you like to buy Incineroar for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_INCINEROAR, 50, ITEM_NONE)
+                        playmoncry (SPECIES_INCINEROAR, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Incineroar!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Primarina - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_PRIMARINA, 4, 3)
+                    msgbox(format("Would you like to buy Primarina for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_PRIMARINA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_PRIMARINA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Primarina!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Vikavolt - 600 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 600) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_VIKAVOLT, 4, 3)
+                    msgbox(format("Would you like to buy Vikavolt for 600 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (600)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_VIKAVOLT, 50, ITEM_NONE)
+                        playmoncry (SPECIES_VIKAVOLT, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Vikavolt!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 600 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Kommo-o - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_KOMMO_O, 4, 3)
+                    msgbox(format("Would you like to buy Kommo-o for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_KOMMO_O, 50, ITEM_NONE)
+                        playmoncry (SPECIES_KOMMO_O, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Kommo-o!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+
+
+// ---------- Main entry script for Variant Merchant ----------
+script PokemonVariantShop {
+    goto (PokemonVariantShop_RegionMenu)
+}
+
+// ---------- Region selection menu ----------
+script PokemonVariantShop_RegionMenu {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Welcome to the Regional Variant Shop!\nThese Pokémon have unique forms from different regions.\nWhich region's variants would you like to browse?"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 3, 0, DYN_MULTICHOICE_CB_NONE,
+        "Alolan Forms", "Galarian Forms", "Hisuian Forms")
+
+    switch (var(VAR_RESULT)) {
+        case 127: // B pressed
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 0: // Alolan Forms
+            hidecoinsbox (10, 3)
+            goto (PokemonVariantShop_Alola)
+        case 1: // Galarian Forms
+            hidecoinsbox (10, 3)
+            goto (PokemonVariantShop_Galar)
+        case 2: // Hisuian Forms
+            hidecoinsbox (10, 3)
+            goto (PokemonVariantShop_Hisui)
+    }
+}
+
+// ---------- Alolan Forms page ----------
+script PokemonVariantShop_Alola {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Alolan Form Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Alolan Raichu (800)", "Alolan Ninetales (1000)", "Alolan Marowak (800)",
+        "Alolan Muk (700)", "Alolan Exeggutor (700)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonVariantShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Alolan Raichu - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!\nCome back after making space."), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_RAICHU_ALOLA, 4, 3)
+                    msgbox(format("Would you like to buy Alolan Raichu for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_RAICHU_ALOLA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_RAICHU_ALOLA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Alolan Raichu!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind? Come back if you do."), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Alolan Ninetales - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_NINETALES_ALOLA, 4, 3)
+                    msgbox(format("Would you like to buy Alolan Ninetales for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_NINETALES_ALOLA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_NINETALES_ALOLA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Alolan Ninetales!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Alolan Marowak - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_MAROWAK_ALOLA, 4, 3)
+                    msgbox(format("Would you like to buy Alolan Marowak for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_MAROWAK_ALOLA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_MAROWAK_ALOLA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Alolan Marowak!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Alolan Muk - 700 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 700) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_MUK_ALOLA, 4, 3)
+                    msgbox(format("Would you like to buy Alolan Muk for 700 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (700)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_MUK_ALOLA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_MUK_ALOLA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Alolan Muk!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 700 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Alolan Exeggutor - 700 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 700) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_EXEGGUTOR_ALOLA, 4, 3)
+                    msgbox(format("Would you like to buy Alolan Exeggutor for 700 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (700)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_EXEGGUTOR_ALOLA, 50, ITEM_NONE)
+                        playmoncry (SPECIES_EXEGGUTOR_ALOLA, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Alolan Exeggutor!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 700 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+// ---------- Galarian Forms page ----------
+script PokemonVariantShop_Galar {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Galarian Form Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Galarian Slowbro (800)", "Galarian Rapidash (800)", "Galarian Weezing (700)",
+        "Galarian Darmanitan (900)", "Galarian Corsola (600)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonVariantShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Galarian Slowbro - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_SLOWBRO_GALAR, 4, 3)
+                    msgbox(format("Would you like to buy Galarian Slowbro for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_SLOWBRO_GALAR, 50, ITEM_NONE)
+                        playmoncry (SPECIES_SLOWBRO_GALAR, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Galarian Slowbro!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Galarian Rapidash - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_RAPIDASH_GALAR, 4, 3)
+                    msgbox(format("Would you like to buy Galarian Rapidash for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_RAPIDASH_GALAR, 50, ITEM_NONE)
+                        playmoncry (SPECIES_RAPIDASH_GALAR, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Galarian Rapidash!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Galarian Weezing - 700 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 700) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_WEEZING_GALAR, 4, 3)
+                    msgbox(format("Would you like to buy Galarian Weezing for 700 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (700)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_WEEZING_GALAR, 50, ITEM_NONE)
+                        playmoncry (SPECIES_WEEZING_GALAR, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Galarian Weezing!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 700 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Galarian Darmanitan - 900 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 900) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_DARMANITAN_GALAR_STANDARD, 4, 3)
+                    msgbox(format("Would you like to buy Galarian Darmanitan for 900 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (900)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_DARMANITAN_GALAR_STANDARD, 50, ITEM_NONE)
+                        playmoncry (SPECIES_DARMANITAN_GALAR_STANDARD, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Galarian Darmanitan!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 900 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Galarian Corsola - 600 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 600) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_CORSOLA_GALAR, 4, 3)
+                    msgbox(format("Would you like to buy Galarian Corsola for 600 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (600)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_CORSOLA_GALAR, 50, ITEM_NONE)
+                        playmoncry (SPECIES_CORSOLA_GALAR, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Galarian Corsola!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 600 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+// ---------- Hisuian Forms page ----------
+script PokemonVariantShop_Hisui {
+    lockall
+    faceplayer
+    showcoinsbox (16, 3)
+
+    msgbox(format("Hisuian Form Pokémon!"), MSGBOX_DEFAULT)
+    dynmultichoice(0, 0, FALSE, 6, 0, DYN_MULTICHOICE_CB_NONE,
+        "Hisuian Arcanine (1000)", "Hisuian Zoroark (1000)", "Hisuian Goodra (1100)",
+        "Hisuian Braviary (900)", "Hisuian Lilligant (800)", "Back")
+
+    switch (var(VAR_RESULT)) {
+        case 127:
+            msgbox(format("Come back anytime!"), MSGBOX_DEFAULT)
+            hidecoinsbox (10, 3)
+            release
+            end
+        case 5: // Back -> Region menu
+            hidecoinsbox (10, 3)
+            goto (PokemonVariantShop_RegionMenu)
+        default:
+            if (var(VAR_RESULT) == 0) {
+                // Hisuian Arcanine - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_ARCANINE_HISUI, 4, 3)
+                    msgbox(format("Would you like to buy Hisuian Arcanine for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_ARCANINE_HISUI, 50, ITEM_NONE)
+                        playmoncry (SPECIES_ARCANINE_HISUI, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Hisuian Arcanine!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 1) {
+                // Hisuian Zoroark - 1000 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1000) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_ZOROARK_HISUI, 4, 3)
+                    msgbox(format("Would you like to buy Hisuian Zoroark for 1000 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1000)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_ZOROARK_HISUI, 50, ITEM_NONE)
+                        playmoncry (SPECIES_ZOROARK_HISUI, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Hisuian Zoroark!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1000 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 2) {
+                // Hisuian Goodra - 1100 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 1100) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_GOODRA_HISUI, 4, 3)
+                    msgbox(format("Would you like to buy Hisuian Goodra for 1100 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (1100)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_GOODRA_HISUI, 50, ITEM_NONE)
+                        playmoncry (SPECIES_GOODRA_HISUI, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Hisuian Goodra!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 1100 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 3) {
+                // Hisuian Braviary - 900 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 900) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_BRAVIARY_HISUI, 4, 3)
+                    msgbox(format("Would you like to buy Hisuian Braviary for 900 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (900)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_BRAVIARY_HISUI, 50, ITEM_NONE)
+                        playmoncry (SPECIES_BRAVIARY_HISUI, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Hisuian Braviary!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 900 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+            if (var(VAR_RESULT) == 4) {
+                // Hisuian Lilligant - 800 coins
+                checkcoins (VAR_TEMP_0)
+                if (var(VAR_TEMP_0) >= 800) {
+                    getpartysize
+                    if (var(VAR_RESULT) == 6) {
+                        msgbox(format("Your party is full!"), MSGBOX_DEFAULT)
+                        hidecoinsbox (10, 3)
+                        release
+                        end
+                    }
+                    showmonpic (SPECIES_LILLIGANT_HISUI, 4, 3)
+                    msgbox(format("Would you like to buy Hisuian Lilligant for 800 coins?"), MSGBOX_DEFAULT)
+                    hidemonpic
+                    dynmultichoice(12, 6, TRUE, 2, 0, DYN_MULTICHOICE_CB_NONE, "Yes", "No")
+                    if (var(VAR_RESULT) == 0) {
+                        removecoins (800)
+                        updatecoinsbox (10, 3)
+                        givemon (SPECIES_LILLIGANT_HISUI, 50, ITEM_NONE)
+                        playmoncry (SPECIES_LILLIGANT_HISUI, CRY_MODE_NORMAL)
+                        waitmoncry
+                        msgbox(format("You received Hisuian Lilligant!"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    } else {
+                        msgbox(format("Changed your mind?"), MSGBOX_DEFAULT)
+                        waitbuttonpress
+                    }
+                } else {
+                    msgbox(format("You need 800 coins!"), MSGBOX_DEFAULT)
+                }
+                hidecoinsbox (10, 3)
+                release
+                end
+            }
+    }
+}
+
+
+script MauvilleCity_GameCorner_EventScript_ReactionGame {
+ lockall
+    checkitem(ITEM_COIN_CASE)
+    if (var(VAR_RESULT) == FALSE) {
+        msgbox("You can't play if you don't have a COIN CASE.", MSGBOX_DEFAULT)
+        releaseall
+        end
+    }
+    msgbox("It's a REACTION GAME!\nWant to test your reflexes?", MSGBOX_YESNO)
+    closemessage
+    if (var(VAR_RESULT) == NO) {
+        releaseall
+        end
+    }
+    callnative(StartReactionGame)
+    waitstate
+    releaseall
+    end
+}

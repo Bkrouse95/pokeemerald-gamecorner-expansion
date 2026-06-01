@@ -80,6 +80,10 @@
 #include "naming_screen.h"
 #include "rogue_voltorbflip.h"
 #include "chooseboxmon.h"
+// At the top with other includes
+#include "reaction_game.h"
+
+
 
 #define TAG_ITEM_ICON 5500
 
@@ -5784,4 +5788,12 @@ bool8 CheckAddCoins(void)
         return FALSE;
     else
         return TRUE;
+}
+
+
+// Add this function somewhere in the file
+bool8 ScrSpecial_StartReactionGame(void)
+{
+    StartReactionGame();
+    return FALSE;
 }
