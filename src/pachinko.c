@@ -29,6 +29,11 @@
 #include "constants/weather.h"
 #include "constants/vars.h"
 
+
+
+#ifndef INCBIN_S16
+#define INCBIN_S16 INCBIN_U16
+#endif
 // In order to run the Pinball game, it should be launched via a normal script
 // like the example below. VAR_RESULT is set to 1 if the player successfully
 // completes the game, 0 otherwise.

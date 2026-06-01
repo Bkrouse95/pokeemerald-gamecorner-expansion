@@ -44,15 +44,17 @@
 #define __(x)       {x}
 #define COMPOUND_STRING(x) 0
 #define INCBIN(...) {0}
+#define INCBIN(...) {0}
 #define INCBIN_U8   INCBIN
 #define INCBIN_U16  INCBIN
 #define INCBIN_U32  INCBIN
+#define INCBIN_S16  INCBIN
 #define INCBIN_COMP INCBIN
-#define INCGFX(...) {0}
 #define INCGFX_U8   INCGFX
 #define INCGFX_U16  INCGFX
 #define INCGFX_U32  INCGFX
 #define INCGFX_COMP INCGFX
+
 #endif // IDE support
 
 #define ARRAY_COUNT(array) (size_t)(sizeof(array) / sizeof((array)[0]))
