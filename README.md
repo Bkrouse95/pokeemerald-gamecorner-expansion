@@ -34,7 +34,7 @@ Also thank you to Viperio, who made an initial Snake for Pokemon Emerald that I 
 # [Credits](CREDITS.md)
 
  [![](https://img.shields.io/github/all-contributors/rh-hideout/pokeemerald-expansion/upcoming)](CREDITS.md)
-
+CREDITS TO RHH, PRET, CHRIS PICHE, AGSMGMaster64, AsparagusEduardo, huderlem, Pokeabbie  and anyone else involved in the making of this project!  
 If you use **`pokeemerald-expansion`**, please credit **RHH (Rom Hacking Hideout)**. Optionally, include the version number for clarity.
 
 ```
