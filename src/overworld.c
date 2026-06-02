@@ -82,6 +82,7 @@
 #include "constants/songs.h"
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
+#include "game_corner_link.h"
 
 STATIC_ASSERT((B_FLAG_FOLLOWERS_DISABLED == 0 || OW_FOLLOWERS_ENABLED), FollowersFlagAssignedWithoutEnablingThem);
 
@@ -202,6 +203,7 @@ static u8 sPlayerLinkStates[MAX_LINK_PLAYERS];
 static u16 (*sPlayerKeyInterceptCallback)(u32);
 static bool8 sReceivingFromLink;
 static u8 sRfuKeepAliveTimer;
+static const u8 sTestMsg[] = _("L button pressed!");
 
 COMMON_DATA u16 *gOverworldTilemapBuffer_Bg2 = NULL;
 COMMON_DATA u16 *gOverworldTilemapBuffer_Bg1 = NULL;
@@ -1643,6 +1645,11 @@ bool32 IsOverworldLinkActive(void)
 
 static void DoCB1_Overworld(u16 newKeys, u16 heldKeys)
 {
+if (JOY_NEW(L_BUTTON))
+{
+    PlaySE(SE_PIN);
+    GC_SendJackpot(777);
+}
     struct FieldInput inputStruct;
 
     UpdatePlayerAvatarTransitionState();
@@ -1819,6 +1826,7 @@ u8 UpdateSpritePaletteWithTime(u8 paletteNum)
 
 static void OverworldBasic(void)
 {
+    GC_CheckIncomingPackets();
     ScriptContext_RunScript();
     RunTasks();
     AnimateSprites();
