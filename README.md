@@ -1,18 +1,14 @@
 # Pokémon Emerald Game Corner Expansion
-
+CREDITS TO RHH, PRET, CHRIS PICHE, AGSMGMaster64, AsparagusEduardo, huderlem, Pokeabbie  and anyone else involved in the making of this project!  
 Hello! This is a tweaked version of Chris Piche's Game Corner Expansion feature branch made by me, AGSMGMaster64.
 Currently, this adds a new config file that uses some flags by default but can be configured to other flags if necessary.
 Some new music and changes to the Mauville Corner have been made as well, so keep that in mind if you plan to merge this into your
 existing project. Credits to AsparagusEduardo for the basis of this merge here, I just mainly tweaked things around to help
 out any developers who may want to use this as well.
 
-Updated to pokeemerald-expansion v1.12.0
 
-To pull from this branch here, just simply use these commands here:
-```
-git remote add AGSMG https://github.com/agsmgmaster64/worldlinkdeluxe-ame/
-git pull AGSMG gacha-expansion
-```
+Updated to pokeemerald-expansion v1.16.0!
+
 
 
 Below is the rest of the original description from Chris Piche himself:
