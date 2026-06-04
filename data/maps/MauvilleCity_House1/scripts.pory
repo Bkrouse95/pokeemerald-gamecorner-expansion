@@ -2522,21 +2522,65 @@ script PokemonVariantShop_Hisui {
 
 
 script MauvilleCity_GameCorner_EventScript_ReactionGame {
- lockall
+    lock
+    faceplayer
+
+
     checkitem(ITEM_COIN_CASE)
     if (var(VAR_RESULT) == FALSE) {
-        msgbox("You can't play if you don't have a COIN CASE.", MSGBOX_DEFAULT)
+        msgbox("You can't play\n if you don't have a COIN CASE.", MSGBOX_DEFAULT)
         releaseall
         end
     }
-    msgbox("It's a REACTION GAME!\nWant to test your reflexes?", MSGBOX_YESNO)
-    closemessage
+    showcoinsbox (10, 3)
+    checkcoins(500)
+    if (var(VAR_RESULT) == FALSE) {
+        msgbox("You need 500 COINS to play.", MSGBOX_DEFAULT)
+	hidecoinsbox (10, 3)
+        release
+        end
+    }
+
+    msgbox(
+        "It's a REACTION GAME!\n"
+        "It costs 500 COINS to play.\p"
+        "Want to test your reflexes?",
+        MSGBOX_YESNO
+    )
+
     if (var(VAR_RESULT) == NO) {
-        releaseall
+        hidecoinsbox (10, 3)
+        release
         end
     }
+
+    removecoins(500)
+    PlaySE(SE_SHOP)
+    updatecoinsbox (10, 3)
+	waitbuttonpress
+	hidecoinsbox (10, 3)
+
     callnative(StartReactionGame)
     waitstate
-    releaseall
+
+    if (var(VAR_TEMP_0) == 4) {
+        msgbox("Amazing reflexes!\nYou won a RARE CANDY!", MSGBOX_DEFAULT)
+    }
+    elif (var(VAR_TEMP_0) == 3) {
+        msgbox("Great job!\nYou won a GREAT BALL!", MSGBOX_DEFAULT)
+       PlaySE (SE_SUCCESS)
+    }
+    elif (var(VAR_TEMP_0) == 2) {
+        msgbox("Nice work!\nYou won a POKé BALL!", MSGBOX_DEFAULT)
+        PlaySE (SE_SUCCESS)
+    }
+    elif (var(VAR_TEMP_0) == 1) {
+        msgbox("Thanks for playing!\nYou won a POTION!", MSGBOX_DEFAULT)
+        PlaySE (SE_SUCCESS)
+    }
+
+    setvar(VAR_TEMP_0, 0)
+
+    release
     end
 }

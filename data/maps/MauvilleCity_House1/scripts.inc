@@ -4785,38 +4785,107 @@ PokemonVariantShop_Hisui_66:
 
 MauvilleCity_GameCorner_EventScript_ReactionGame::
 # 2525 "data/maps/MauvilleCity_House1/scripts.pory"
-	lockall
+	lock
 # 2526 "data/maps/MauvilleCity_House1/scripts.pory"
+	faceplayer
+# 2529 "data/maps/MauvilleCity_House1/scripts.pory"
 	checkitem ITEM_COIN_CASE
-# 2527 "data/maps/MauvilleCity_House1/scripts.pory"
+# 2530 "data/maps/MauvilleCity_House1/scripts.pory"
 	compare VAR_RESULT, FALSE
 	goto_if_eq MauvilleCity_GameCorner_EventScript_ReactionGame_2
-# 2532 "data/maps/MauvilleCity_House1/scripts.pory"
-	msgbox MauvilleCity_GameCorner_EventScript_ReactionGame_Text_1, MSGBOX_YESNO
-# 2533 "data/maps/MauvilleCity_House1/scripts.pory"
-	closemessage
-# 2534 "data/maps/MauvilleCity_House1/scripts.pory"
-	compare VAR_RESULT, NO
+# 2535 "data/maps/MauvilleCity_House1/scripts.pory"
+	showcoinsbox 10, 3
+# 2536 "data/maps/MauvilleCity_House1/scripts.pory"
+	checkcoins 500
+# 2537 "data/maps/MauvilleCity_House1/scripts.pory"
+	compare VAR_RESULT, FALSE
 	goto_if_eq MauvilleCity_GameCorner_EventScript_ReactionGame_5
-# 2538 "data/maps/MauvilleCity_House1/scripts.pory"
+# 2544 "data/maps/MauvilleCity_House1/scripts.pory"
+	msgbox MauvilleCity_GameCorner_EventScript_ReactionGame_Text_2, MSGBOX_YESNO
+# 2551 "data/maps/MauvilleCity_House1/scripts.pory"
+	compare VAR_RESULT, NO
+	goto_if_eq MauvilleCity_GameCorner_EventScript_ReactionGame_8
+# 2557 "data/maps/MauvilleCity_House1/scripts.pory"
+	removecoins 500
+# 2558 "data/maps/MauvilleCity_House1/scripts.pory"
+	PlaySE SE_SHOP
+# 2559 "data/maps/MauvilleCity_House1/scripts.pory"
+	updatecoinsbox 10, 3
+# 2560 "data/maps/MauvilleCity_House1/scripts.pory"
+	waitbuttonpress
+# 2561 "data/maps/MauvilleCity_House1/scripts.pory"
+	hidecoinsbox 10, 3
+# 2563 "data/maps/MauvilleCity_House1/scripts.pory"
 	callnative StartReactionGame
-# 2539 "data/maps/MauvilleCity_House1/scripts.pory"
+# 2564 "data/maps/MauvilleCity_House1/scripts.pory"
 	waitstate
-# 2540 "data/maps/MauvilleCity_House1/scripts.pory"
-	releaseall
+# 2566 "data/maps/MauvilleCity_House1/scripts.pory"
+	compare VAR_TEMP_0, 4
+	goto_if_eq MauvilleCity_GameCorner_EventScript_ReactionGame_11
+# 2569 "data/maps/MauvilleCity_House1/scripts.pory"
+	compare VAR_TEMP_0, 3
+	goto_if_eq MauvilleCity_GameCorner_EventScript_ReactionGame_12
+# 2573 "data/maps/MauvilleCity_House1/scripts.pory"
+	compare VAR_TEMP_0, 2
+	goto_if_eq MauvilleCity_GameCorner_EventScript_ReactionGame_13
+# 2577 "data/maps/MauvilleCity_House1/scripts.pory"
+	compare VAR_TEMP_0, 1
+	goto_if_eq MauvilleCity_GameCorner_EventScript_ReactionGame_14
+MauvilleCity_GameCorner_EventScript_ReactionGame_10:
+# 2582 "data/maps/MauvilleCity_House1/scripts.pory"
+	setvar VAR_TEMP_0, 0
+# 2584 "data/maps/MauvilleCity_House1/scripts.pory"
+	release
 	end
 
 MauvilleCity_GameCorner_EventScript_ReactionGame_2:
-# 2528 "data/maps/MauvilleCity_House1/scripts.pory"
+# 2531 "data/maps/MauvilleCity_House1/scripts.pory"
 	msgbox MauvilleCity_GameCorner_EventScript_ReactionGame_Text_0, MSGBOX_DEFAULT
-# 2529 "data/maps/MauvilleCity_House1/scripts.pory"
+# 2532 "data/maps/MauvilleCity_House1/scripts.pory"
 	releaseall
 	end
 
 MauvilleCity_GameCorner_EventScript_ReactionGame_5:
-# 2535 "data/maps/MauvilleCity_House1/scripts.pory"
-	releaseall
+# 2538 "data/maps/MauvilleCity_House1/scripts.pory"
+	msgbox MauvilleCity_GameCorner_EventScript_ReactionGame_Text_1, MSGBOX_DEFAULT
+# 2539 "data/maps/MauvilleCity_House1/scripts.pory"
+	hidecoinsbox 10, 3
+# 2540 "data/maps/MauvilleCity_House1/scripts.pory"
+	release
 	end
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_8:
+# 2552 "data/maps/MauvilleCity_House1/scripts.pory"
+	hidecoinsbox 10, 3
+# 2553 "data/maps/MauvilleCity_House1/scripts.pory"
+	release
+	end
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_11:
+# 2567 "data/maps/MauvilleCity_House1/scripts.pory"
+	msgbox MauvilleCity_GameCorner_EventScript_ReactionGame_Text_3, MSGBOX_DEFAULT
+	goto MauvilleCity_GameCorner_EventScript_ReactionGame_10
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_12:
+# 2570 "data/maps/MauvilleCity_House1/scripts.pory"
+	msgbox MauvilleCity_GameCorner_EventScript_ReactionGame_Text_4, MSGBOX_DEFAULT
+# 2571 "data/maps/MauvilleCity_House1/scripts.pory"
+	PlaySE SE_SUCCESS
+	goto MauvilleCity_GameCorner_EventScript_ReactionGame_10
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_13:
+# 2574 "data/maps/MauvilleCity_House1/scripts.pory"
+	msgbox MauvilleCity_GameCorner_EventScript_ReactionGame_Text_5, MSGBOX_DEFAULT
+# 2575 "data/maps/MauvilleCity_House1/scripts.pory"
+	PlaySE SE_SUCCESS
+	goto MauvilleCity_GameCorner_EventScript_ReactionGame_10
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_14:
+# 2578 "data/maps/MauvilleCity_House1/scripts.pory"
+	msgbox MauvilleCity_GameCorner_EventScript_ReactionGame_Text_6, MSGBOX_DEFAULT
+# 2579 "data/maps/MauvilleCity_House1/scripts.pory"
+	PlaySE SE_SUCCESS
+	goto MauvilleCity_GameCorner_EventScript_ReactionGame_10
 
 
 coincase_Text_0:
@@ -5848,9 +5917,31 @@ PokemonVariantShop_Hisui_Text_16:
 	.string "You received Hisuian Lilligant!$"
 
 MauvilleCity_GameCorner_EventScript_ReactionGame_Text_0:
-# 2528 "data/maps/MauvilleCity_House1/scripts.pory"
-	.string "You can't play if you don't have a COIN CASE.$"
+# 2531 "data/maps/MauvilleCity_House1/scripts.pory"
+	.string "You can't play\n if you don't have a COIN CASE.$"
 
 MauvilleCity_GameCorner_EventScript_ReactionGame_Text_1:
-# 2532 "data/maps/MauvilleCity_House1/scripts.pory"
-	.string "It's a REACTION GAME!\nWant to test your reflexes?$"
+# 2538 "data/maps/MauvilleCity_House1/scripts.pory"
+	.string "You need 500 COINS to play.$"
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_Text_2:
+# 2545 "data/maps/MauvilleCity_House1/scripts.pory"
+	.string "It's a REACTION GAME!\n"
+	.string "It costs 500 COINS to play.\p"
+	.string "Want to test your reflexes?$"
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_Text_3:
+# 2567 "data/maps/MauvilleCity_House1/scripts.pory"
+	.string "Amazing reflexes!\nYou won a RARE CANDY!$"
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_Text_4:
+# 2570 "data/maps/MauvilleCity_House1/scripts.pory"
+	.string "Great job!\nYou won a GREAT BALL!$"
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_Text_5:
+# 2574 "data/maps/MauvilleCity_House1/scripts.pory"
+	.string "Nice work!\nYou won a POKé BALL!$"
+
+MauvilleCity_GameCorner_EventScript_ReactionGame_Text_6:
+# 2578 "data/maps/MauvilleCity_House1/scripts.pory"
+	.string "Thanks for playing!\nYou won a POTION!$"
