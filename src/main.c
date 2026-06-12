@@ -25,6 +25,8 @@
 #include "trainer_hill.h"
 #include "test_runner.h"
 #include "constants/rgb.h"
+#include "task.h"
+extern void Task_LiveMultiplayerStream(u8 taskId);
 
 static void VBlankIntr(void);
 static void HBlankIntr(void);
@@ -146,7 +148,7 @@ void AgbMainLoop(void)
             DoSoftReset();
         }
 
-        if (Overworld_SendKeysToLinkIsRunning() == TRUE)
+       if (Overworld_SendKeysToLinkIsRunning() == TRUE)
         {
             gLinkTransferringData = TRUE;
             UpdateLinkAndCallCallbacks();
@@ -172,7 +174,6 @@ void AgbMainLoop(void)
         WaitForVBlank();
     }
 }
-
 static void UpdateLinkAndCallCallbacks(void)
 {
     if (!HandleLinkConnection())

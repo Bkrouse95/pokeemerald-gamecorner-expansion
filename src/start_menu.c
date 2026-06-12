@@ -51,6 +51,9 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+
+void Task_BackgroundLinkInit(u8 taskId);
+
 // Menu actions
 enum
 {
@@ -61,6 +64,7 @@ enum
     MENU_ACTION_PLAYER,
     MENU_ACTION_SAVE,
     MENU_ACTION_OPTION,
+    MENU_ACTION_MULTIPLAYER,
     MENU_ACTION_EXIT,
     MENU_ACTION_RETIRE_SAFARI,
     MENU_ACTION_PLAYER_LINK,
@@ -138,6 +142,10 @@ static u8 BattlePyramidConfirmRetireCallback(void);
 static u8 BattlePyramidRetireYesNoCallback(void);
 static u8 BattlePyramidRetireInputCallback(void);
 
+
+// multiplayer stream callbacks
+static bool8 StartMenu_MultiplayerCallback(void);
+
 // Task callbacks
 static void StartMenuTask(u8 taskId);
 static void SaveGameTask(u8 taskId);
@@ -198,6 +206,7 @@ static const struct MenuAction sStartMenuItems[] =
     [MENU_ACTION_PLAYER]          = {gText_MenuPlayer,  {.u8_void = StartMenuPlayerNameCallback}},
     [MENU_ACTION_SAVE]            = {gText_MenuSave,    {.u8_void = StartMenuSaveCallback}},
     [MENU_ACTION_OPTION]          = {gText_MenuOption,  {.u8_void = StartMenuOptionCallback}},
+    [MENU_ACTION_MULTIPLAYER]   = {gText_StartMenu_Multiplayer, {.u8_void = StartMenu_MultiplayerCallback}},
     [MENU_ACTION_EXIT]            = {gText_MenuExit,    {.u8_void = StartMenuExitCallback}},
     [MENU_ACTION_RETIRE_SAFARI]   = {gText_MenuRetire,  {.u8_void = StartMenuSafariZoneRetireCallback}},
     [MENU_ACTION_PLAYER_LINK]     = {gText_MenuPlayer,  {.u8_void = StartMenuLinkModePlayerNameCallback}},
@@ -326,6 +335,10 @@ static void BuildStartMenuActions(void)
 
 static void AddStartMenuAction(u8 action)
 {
+    if (action == MENU_ACTION_EXIT)
+    {
+        AppendToList(sCurrentStartMenuActions, &sNumStartMenuActions, MENU_ACTION_MULTIPLAYER);
+    }
     AppendToList(sCurrentStartMenuActions, &sNumStartMenuActions, action);
 }
 
@@ -1517,4 +1530,74 @@ void Script_ForceSaveGame(struct ScriptContext *ctx)
     ShowSaveInfoWindow();
     gMenuCallback = SaveCallback;
     sSaveDialogCallback = SaveSavingMessageCallback;
+
+}
+
+static u8 StartMenu_MultiplayerCallback(void)
+{
+    // Cleanly close the menu and instantly restore the player's screen and controls
+    HideStartMenu(); 
+    
+    if (gLinkStatus != 0 || FindTaskIdByFunc(Task_LiveMultiplayerStream) != TASK_NONE)
+    {
+        PlaySE(SE_BOO); 
+        return TRUE; 
+    }
+
+    CreateTask(Task_BackgroundLinkInit, 1);
+    return TRUE; 
+}
+
+void Task_BackgroundLinkInit(u8 taskId)
+{
+    s16 *data = gTasks[taskId].data;
+
+    switch (data[0])
+    {
+    case 0:
+        data[1]++;
+        if (data[1] > 10)
+        {
+            data[0]++;
+            data[1] = 0;
+        }
+        break;
+
+    case 1:
+        ClearLinkCallback();
+        OpenLink(); 
+        data[0]++;
+        break;
+
+    case 2:
+        if (GetLinkPlayerCount_2() >= 2)
+        {
+            if (IsLinkMaster()) CheckShouldAdvanceLinkState();
+            data[0]++;
+        }
+        break;
+
+    case 3:
+        if (gReceivedRemoteLinkPlayers == TRUE && IsLinkPlayerDataExchangeComplete() == TRUE)
+        {
+            PlaySE(SE_EXP); 
+            
+            gFieldLinkPlayerCount = GetLinkPlayerCount_2();
+            gLocalLinkPlayerId = GetMultiplayerId();
+            
+            gLinkType = LINKTYPE_RECORD_MIX_BEFORE; 
+            SetSuppressLinkErrorMessage(TRUE); 
+            
+            // --- THE RESTORED BLACK SCREEN CURE ---
+            gPaletteFade.active = FALSE; 
+            gPaletteFade.bufferTransferDisabled = FALSE;
+            BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+            UnlockPlayerFieldControls();
+            ScriptContext_Enable();
+            
+            CreateTask(Task_LiveMultiplayerStream, 5);
+            DestroyTask(taskId);
+        }
+        break;
+    }
 }

@@ -83,6 +83,8 @@
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
 
+extern void Task_LiveMultiplayerStream(u8 taskId);
+
 STATIC_ASSERT((B_FLAG_FOLLOWERS_DISABLED == 0 || OW_FOLLOWERS_ENABLED), FollowersFlagAssignedWithoutEnablingThem);
 
 struct CableClubPlayer
@@ -1820,6 +1822,13 @@ u8 UpdateSpritePaletteWithTime(u8 paletteNum)
 static void OverworldBasic(void)
 {
     ScriptContext_RunScript();
+    // --- ADD THIS BLOCK ---
+    // If we are actively linked but the map transition wiped our task, restart it!
+    if (gLinkType != 0 && !HasLinkErrorOccurred() && FindTaskIdByFunc(Task_LiveMultiplayerStream) == TASK_NONE)
+    {
+        CreateTask(Task_LiveMultiplayerStream, 5);
+    }
+    // ---
     RunTasks();
     AnimateSprites();
     CameraUpdate();
@@ -3886,6 +3895,7 @@ void Overworld_CreditsMainCB(void)
     bool8 fading = !!gPaletteFade.active;
     if (fading)
         SetVBlankCallback(NULL);
+
     RunTasks();
     AnimateSprites();
     CameraUpdateNoObjectRefresh();

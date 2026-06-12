@@ -345,5 +345,21 @@ void SetCloseLinkCallbackAndType(u16 type);
 bool32 IsSendingKeysToLink(void);
 u32 GetLinkRecvQueueLength(void);
 bool32 ShouldCheckForUnionRoom(void);
+struct QuetzalStatePacket
+{
+    u8 mapGroup;
+    u8 mapNum;
+    u8 x;
+    u8 y;
+    u8 movementDirection : 4;
+    u8 isRunning : 1;
+    u8 isBiking : 1;
+    u8 isSurfing : 1;
+    u8 isConnected : 1;
+    u8 playerAvatarId;
+} __attribute__((packed, aligned(4)));
+
+void Task_LiveMultiplayerStream(u8 taskId);
+void Task_BackgroundLinkInit(u8 taskId);
 
 #endif // GUARD_LINK_H
